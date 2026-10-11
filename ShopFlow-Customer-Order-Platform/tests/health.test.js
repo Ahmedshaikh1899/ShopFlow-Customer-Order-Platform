@@ -1,23 +1,8 @@
 
+const pino = require("pino");
 const request = require("supertest");
 const { createApp } = require("../src/app");
 const { createMetrics } = require("../src/metrics");
-
-function createTestLogger() {
-  const logger = {
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn(),
-    trace: jest.fn(),
-    fatal: jest.fn(),
-    child: jest.fn()
-  };
-
-  logger.child.mockReturnValue(logger);
-
-  return logger;
-}
 
 function appWith(
   poolQuery = jest.fn().mockResolvedValue({
@@ -34,7 +19,7 @@ function appWith(
   };
 
   const pool = { query: poolQuery };
-  const logger = createTestLogger();
+  const logger = pino({ level: "silent" });
 
   return createApp({
     config,
