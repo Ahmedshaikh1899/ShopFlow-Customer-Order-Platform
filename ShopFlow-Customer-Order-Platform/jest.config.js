@@ -1,0 +1,1 @@
+module.exports={testEnvironment:"node",collectCoverageFrom:["src/**/*.js","!src/server.js","!src/db/migrate.js"],coverageDirectory:"coverage",coverageReporters:["text","lcov","cobertura"],testMatch:["**/tests/**/*.test.js"]};

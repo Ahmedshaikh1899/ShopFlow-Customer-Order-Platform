@@ -1,0 +1,3 @@
+const client=require("prom-client");
+function createMetrics(){const registry=new client.Registry();client.collectDefaultMetrics({register:registry,prefix:"shopflow_"});const httpRequests=new client.Counter({name:"shopflow_http_requests_total",help:"Total HTTP requests handled",labelNames:["method","route","status_code"],registers:[registry]});const httpDuration=new client.Histogram({name:"shopflow_http_request_duration_seconds",help:"HTTP request duration in seconds",labelNames:["method","route","status_code"],buckets:[.005,.01,.025,.05,.1,.25,.5,1,2.5,5],registers:[registry]});return{registry,httpRequests,httpDuration};}
+module.exports={createMetrics};

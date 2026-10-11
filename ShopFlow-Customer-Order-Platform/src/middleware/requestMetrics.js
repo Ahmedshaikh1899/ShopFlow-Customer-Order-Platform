@@ -1,0 +1,2 @@
+function requestMetrics(m){return(req,res,next)=>{const start=process.hrtime.bigint();res.on("finish",()=>{if(req.path==="/metrics")return;const route=req.route?.path?`${req.baseUrl||""}${req.route.path}`:["/health","/ready"].includes(req.path)?req.path:"unmatched";const labels={method:req.method,route,status_code:String(res.statusCode)};m.httpRequests.inc(labels);m.httpDuration.observe(labels,Number(process.hrtime.bigint()-start)/1e9);});next();};}
+module.exports={requestMetrics};

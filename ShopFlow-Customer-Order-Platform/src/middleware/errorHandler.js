@@ -1,0 +1,3 @@
+function notFoundHandler(req,res){res.status(404).json({error:{code:"NOT_FOUND",message:"The requested resource was not found."},requestId:req.id});}
+function errorHandler(logger){return(err,req,res,_next)=>{const status=Number.isInteger(err.statusCode)?err.statusCode:500;if(status>=500)logger.error({err,requestId:req.id},"Request failed");else logger.warn({err:err.message,requestId:req.id},"Request rejected");res.status(status).json({error:{code:err.code||(status===500?"INTERNAL_ERROR":"REQUEST_ERROR"),message:status===500?"An unexpected error occurred.":err.message},requestId:req.id});};}
+module.exports={notFoundHandler,errorHandler};

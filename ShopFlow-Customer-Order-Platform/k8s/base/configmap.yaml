@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopflow-config
+  namespace: shopflow
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  LOG_LEVEL: "info"
+  CORS_ORIGIN: "*"
+  RATE_LIMIT_WINDOW_MS: "60000"
+  RATE_LIMIT_MAX: "120"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "shopflow"
+  DB_USER: "shopflow"
+  DB_POOL_MAX: "10"

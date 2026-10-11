@@ -1,0 +1,20 @@
+pipeline {
+  agent any
+  options { timestamps(); disableConcurrentBuilds(); buildDiscarder(logRotator(numToKeepStr: '20')) }
+  stages {
+    stage('Checkout') { steps { checkout scm } }
+    stage('Install') { steps { sh 'npm install' } }
+    stage('Lint') { steps { sh 'npm run lint' } }
+    stage('Unit Tests') { steps { sh 'npm run test:coverage' } }
+    stage('SonarQube') {
+      steps { echo 'Configure SonarQube server in Jenkins; then enable withSonarQubeEnv and sonar-scanner.' }
+    }
+    stage('Build Image') { steps { sh 'docker build -t shopflow-api:${BUILD_NUMBER} .' } }
+    stage('Security Scan') { steps { echo 'Add Trivy image scan and fail the build on policy violations.' } }
+    stage('Publish') {
+      when { branch 'main' }
+      steps { echo 'Configure GHCR credentials, immutable tags, and image push after validating the lab registry.' }
+    }
+  }
+  post { always { echo "ShopFlow build ${BUILD_NUMBER}: ${currentBuild.currentResult}" } }
+}
